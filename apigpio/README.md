@@ -20,13 +20,13 @@ Next download and install this driver
 
 ```bash
 git clone https://github.com/neildavis/drv8835-motor-driver-pigpio-python
-cd drv8835-motor-driver-pigpio-python/pigpio
+cd drv8835-motor-driver-pigpio-python/apigpio
 sudo python setup.py install
 ```
 
 ### Running the example program
 
-This library comes with an example program that drives each motor in both directions.  To run the example, navigate to the `drv8835_driver_pigpio/pigpio` directory and run:
+This library comes with an example program that drives each motor in both directions.  To run the example, navigate to the `drv8835_driver_pigpio/apigpio` directory and run:
 
 ```bash
 python example.py
@@ -39,7 +39,7 @@ In order to keep source compatibility with Pololu's driver API, absolute motor s
 The library can be imported into a Python program with the following line:
 
 ```python
-from drv8835_driver_pigpio import motors, MAX_SPEED, cleanup
+from drv8835_driver_apigpio import motors, MAX_SPEED, cleanup
 ```
 
 For convenience, a constant called ```MAX_SPEED``` (which is equal to 480) is available on all the objects provided by this library.  You can access it directly by just writing ```MAX_SPEED``` if you imported it as shown above, or it can be accessed in the following ways:
@@ -75,7 +75,7 @@ When you are finished, before exiting your program call the library's `cleanup` 
 If you are controlling multiple motor drivers, you might prefer to import the library using:
 
  ```python
- import drv8835_driver_pigpio
+ import drv8835_driver_apigpio
  ```
 
- which requires the commands listed above to be prefixed with ```drv8835_driver_pigpio.```
+ which requires the commands listed above to be prefixed with ```drv8835_driver_apigpio.```
