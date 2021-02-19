@@ -14,7 +14,7 @@ MOTOR1_DIR_PIN = 5
 MOTOR2_PWM_PIN = 13
 MOTOR2_DIR_PIN = 6
 # Default PWM frequency - Since pigpio uses hardware PWM we can go very high
-PWM_FREQUENCY=20000000 # 20 MHz, 
+PWM_FREQUENCY=250000 # 250 KHz is the max PWM supported by the 8835!
 # Default host and port - Local on default port 8888
 DEFAULT_HOST="127.0.0.1"
 DEFAULT_PORT=8888
