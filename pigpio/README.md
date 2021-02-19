@@ -12,7 +12,13 @@ Unlike the Pololu driver there is no dependency on the deprecated [wiringPi](htt
 
 ### Installation
 
-First ensure you have the pigpio dameon and python packages installed, and the ```pigpiod``` daemon running as descibed [here](../README.md)
+First ensure you have the pigpio dameon installed, and the ```pigpiod``` daemon running as descibed [here](../README.md)
+
+Next, install the ```pigpio``` Python client library:
+
+```bash
+sudo apt-get install python-pigpio python3-pigpio
+```
 
 These instructions assume you will use Python 2. If you want to use Python 3, use the ```python3``` command instead of ```python``` for running Python scripts.
 

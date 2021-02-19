@@ -4,7 +4,12 @@ Python library for the Pololu DRV8835 dual motor driver kit for Raspberry Pi usi
 
 This repo contains versions of [Pololu's driver](https://github.com/pololu/drv8835-motor-driver-rpi) for their [DRV8835 Dual Motor Driver Kit for Raspberry Pi](https://www.pololu.com/product/2753).
 
-Unlike the Pololu driver there is no dependency on the deprecated [wiringPi](http://wiringpi.com/) library. Instead this library uses the [pigpio](http://abyz.me.uk/rpi/pigpio/) dameon and Python client library.
+Unlike the Pololu driver there is no dependency on the deprecated [wiringPi](http://wiringpi.com/) library. Instead this library utilizes the [pigpio](http://abyz.me.uk/rpi/pigpio/) daemon (```pigpiod```) and uses a Python client library to communicate with the daemon.
+
+Two versions of the driver are provided using different underlying Python client libraries to communicate with ```pigpiod```:
+
+- A standard (blocking) socket I/O via the official [```pigpio``` Python client library](http://abyz.me.uk/rpi/pigpio/python.html) (supports Python 2.x and 3.x).
+- An [asyncio](https://docs.python.org/3/library/asyncio.html) based version using the unofficial (and incomplete) [apigpio](https://github.com/missionpinball/apigpio) library (Python3.7+ required).
 
 ## A note on hardware PWM support
 
@@ -18,10 +23,10 @@ For example, if you start the pigpiod daemon without using a sample rate paramet
 
 ### Installation
 
-First, ensure you have the pigpio dameon and python packages installed:
+First, ensure you have the pigpio dameon installed:
 
 ```bash
-sudo apt-get install pigpio python-pigpio python3-pigpio
+sudo apt-get install pigpio
 ```
 
 ### Starting the pigpiod daemon
