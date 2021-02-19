@@ -4,7 +4,7 @@ Python library for the Pololu DRV8835 dual motor driver kit for Raspberry Pi usi
 
 ## Summary
 
-This library is a version of [Pololu's driver](https://github.com/pololu/drv8835-motor-driver-rpi) for their [DRV8835 Dual Motor Driver Kit for Raspberry Pi](https://www.pololu.com/product/2753). This library supports both Python 2 and Python 3 and aims to retain source compatibility so that it may be used as a *drop-in* replacement.
+This library is a version of [Pololu's driver](https://github.com/pololu/drv8835-motor-driver-rpi) for their [DRV8835 Dual Motor Driver Kit for Raspberry Pi](https://www.pololu.com/product/2753). This library supports both Python 2 and Python 3 and aims to retain source compatibility so that it may be used as a *drop-in* replacement. However, please do note that the MAX_SPEED constant is now a wider range of 1000000 rather than 480.
 
 Unlike the Pololu driver there is no dependency on the deprecated [wiringPi](http://wiringpi.com/) library. Instead this library uses the [pigpio](http://abyz.me.uk/rpi/pigpio/) dameon and Python client library.
 
@@ -40,7 +40,7 @@ python example.py
 
 ## Library reference
 
-In order to keep source compatibility with Pololu's driver API, absolute motor speeds in this library are represented as numbers between *-480* and *480* (inclusive).  Additional methods are provided to allow speed to be represented in percentage terms, i.e. as numbers between *-100* and *100* (inclusive).  A speed of 0 corresponds to braking.  Positive speeds correspond to current flowing from M1A/M2A to M1B/M2B, while negative speeds correspond to current flowing in the other direction.
+Since this libary is using ```pigpio``` ```hardware_PWM``` absolute motor speeds in this library are represented as numbers between *-1000000* and *1000000* (inclusive).  Additional methods are provided to allow speed to be represented in percentage terms, i.e. as numbers between *-100* and *100* (inclusive).  A speed of 0 corresponds to braking.  Positive speeds correspond to current flowing from M1A/M2A to M1B/M2B, while negative speeds correspond to current flowing in the other direction.
 
 The library can be imported into a Python program with the following line:
 
@@ -48,7 +48,7 @@ The library can be imported into a Python program with the following line:
 from drv8835_driver_pigpio import motors, MAX_SPEED, cleanup
 ```
 
-For convenience, a constant called ```MAX_SPEED``` (which is equal to 480) is available on all the objects provided by this library.  You can access it directly by just writing ```MAX_SPEED``` if you imported it as shown above, or it can be accessed in the following ways:
+For convenience, a constant called ```MAX_SPEED``` (which is equal to 1000000) is available on all the objects provided by this library.  You can access it directly by just writing ```MAX_SPEED``` if you imported it as shown above, or it can be accessed in the following ways:
 
 ```python
 motors.MAX_SPEED

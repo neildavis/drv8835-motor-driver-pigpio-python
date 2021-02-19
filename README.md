@@ -9,15 +9,11 @@ Unlike the Pololu driver there is no dependency on the deprecated [wiringPi](htt
 Two versions of the driver are provided using different underlying Python client libraries to communicate with ```pigpiod```:
 
 - A standard (blocking) socket I/O via the official [```pigpio``` Python client library](http://abyz.me.uk/rpi/pigpio/python.html) (supports Python 2.x and 3.x).
-- An [asyncio](https://docs.python.org/3/library/asyncio.html) based version using the unofficial (and incomplete) [apigpio](https://github.com/missionpinball/apigpio) library (Python3.7+ required).
+- An [asyncio](https://docs.python.org/3/library/asyncio.html) based version using the unofficial (and still incomplete) [apigpio](https://github.com/neildavis/apigpio) library (Python3.7+ required).
 
 ## A note on hardware PWM support
 
-A consequence of using `pigpio` instead of `wiringPi` is that there is no *direct* support for the hardware PWM capabilities of the Pi on GPIO pins 12 & 13. PWM implemented in software usually incurs **significant CPU overhead**, and much **lower PWM frequencies** will typically be used (e.g. 3 KHz vs 20 KHz, i.e. non-ultrasonic).  However, mitigating this is the fact that `pigpio` runs as a [dameon](http://abyz.me.uk/rpi/pigpio/pigpiod.html) (one process regardless of number of clients using it) and also supports *hardware timing* for it's software PWM which is significantly more efficient than similar software only PWM implementations (e.g. [RPi.GPIO](https://pypi.org/project/RPi.GPIO/)). However this is still not *true hardware PWM* from the perspective of the Pi hardware's PWM functionality on pins 12 & 13, but it does have the benefit of PWM support being available on *all* GPIO pins.
-
-This library requests 20&nbsp;kHz PWM from the pigpiod daemon to drive the motors. However the *actual* frequency achieved will depend on the parameters passed to the pigpiod daemon when it is started. See the documentation for [pigpiod -s](http://abyz.me.uk/rpi/pigpio/pigpiod.html) and also the table under [selectable frequencies](http://abyz.me.uk/rpi/pigpio/python.html#set_PWM_frequency) for your chosen sample rate parameter.
-
-For example, if you start the pigpiod daemon without using a sample rate parameter (-s) parameter, the default of 5us will be used which limits the frequency to a maximum of 5KHz. To achieve 20Khz, the dameon needs to be started with the sample rate parameter (-s) of 1 or 2, e.g. ```sudo pigpiod -s 2```
+This library uses the [```http://abyz.me.uk/rpi/pigpio/python.html#hardware_PWM```](http://abyz.me.uk/rpi/pigpio/python.html#hardware_PWM) API in ```pigpio``` to make use of true hardware PWN on pins 12 & 13 of the Pi. This generates 250 KHz PWM, which is the maximum supported by the Pololu DRV8835 chip.
 
 ## Getting Started
 
@@ -51,4 +47,4 @@ sudo killall pigpiod
 
 Specific instructions for using the [pigpio Python client library](http://abyz.me.uk/rpi/pigpio/python.html) based version of this library can be found in the [README](pigpio/README.md) file in the ```pigpio``` directory.
 
-If you prefer to use an [asyncio](https://docs.python.org/3/library/asyncio.html) based version of the Python client library, a version of the library using [apigpio](https://github.com/missionpinball/apigpio) is available in the ```apigpio``` directory. See the [README](apigpio/README.md) in that directory for specific instructions in this case. Note this version is limited to use with Python 3.7+
+If you prefer to use an [asyncio](https://docs.python.org/3/library/asyncio.html) based version of the Python client library, a version of the library using [apigpio](https://github.com/neildavis/apigpio) is available in the ```apigpio``` directory. See the [README](apigpio/README.md) in that directory for specific instructions in this case. Note this version is limited to use with Python 3.7+
