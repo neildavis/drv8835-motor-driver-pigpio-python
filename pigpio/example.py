@@ -3,11 +3,11 @@ import time
 from drv8835_driver_pigpio import motors, MAX_SPEED, cleanup
 
 # Set up sequences of motor speeds.
-test_forward_speeds = list(range(0, MAX_SPEED, 1)) + \
-  [MAX_SPEED] * 200 + list(range(MAX_SPEED, 0, -1)) + [0]  
+test_forward_speeds = list(range(0, MAX_SPEED, 2000)) + \
+  [MAX_SPEED] * 200 + list(range(MAX_SPEED, 0, -2000)) + [0]  
 
-test_reverse_speeds = list(range(0, -MAX_SPEED, -1)) + \
-  [-MAX_SPEED] * 200 + list(range(-MAX_SPEED, 0, 1)) + [0]  
+test_reverse_speeds = list(range(0, -MAX_SPEED, -2000)) + \
+  [-MAX_SPEED] * 200 + list(range(-MAX_SPEED, 0, 2000)) + [0]  
 
 try:
     motors.setSpeeds(0, 0)
