@@ -35,16 +35,15 @@ async def io_init(loop=None, host=DEFAULT_HOST, port=DEFAULT_PORT):
     the_pi=apigpio.Pi(loop)
     await the_pi.connect((host, port))
     # Setup GPIO digital outputs for direction
-    asyncio.gather(
+    await asyncio.gather(
+        # Setup digital output GPIO pins for motor direction
         the_pi.set_mode(MOTOR1_DIR_PIN, apigpio.OUTPUT),
         the_pi.set_mode(MOTOR2_DIR_PIN, apigpio.OUTPUT),
-    )
-    asyncio.gather(
-        # Set initial speed to 0 (stopped)
+        # Set initial speed to 0 (stopped) using hardware PWM
         the_pi.hardware_PWM(MOTOR1_PWM_PIN, 0, 0),
         the_pi.hardware_PWM(MOTOR2_PWM_PIN, 0, 0)
     )
- 
+
 async def cleanup():
     """Global cleanup"""
     global the_pi
@@ -66,7 +65,7 @@ class Motor(object):
         if speed > MAX_SPEED:
             speed = MAX_SPEED
         await io_init()
-        asyncio.gather(
+        await asyncio.gather(
             the_pi.hardware_PWM(self.pwm_pin, PWM_FREQUENCY, speed),
             the_pi.write(self.dir_pin, dir_value)
         )
@@ -84,7 +83,6 @@ class Motors(object):
     MAX_SPEED = _max_speed
 
     def __init__(self):
-        global the_pi
         self.motor1 = Motor(pwm_pin=MOTOR1_PWM_PIN, dir_pin=MOTOR1_DIR_PIN)
         self.motor2 = Motor(pwm_pin=MOTOR2_PWM_PIN, dir_pin=MOTOR2_DIR_PIN)
 
