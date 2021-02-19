@@ -4,10 +4,9 @@ try:
 except RuntimeError:
     print("Error importing pigpio module! Please ensure pigpio and python[3]-pigpio are installed")
 
-# To keep source compatibility with Pololu's library using wiringPi we keep the range as -480 to 480
 # Motor speeds for this library are specified as numbers
 # between -MAX_SPEED and MAX_SPEED, inclusive.
-_max_speed = 480
+_max_speed = 1000000
 MAX_SPEED = _max_speed
 
 # Default GPIO pin assignments
@@ -15,6 +14,8 @@ MOTOR1_PWM_PIN = 12
 MOTOR1_DIR_PIN = 5
 MOTOR2_PWM_PIN = 13
 MOTOR2_DIR_PIN = 6
+# Default PWM frequency - Since pigpio uses hardware PWM we can go very high
+PWM_FREQUENCY=250000 # 250 KHz is the max PWM supported by the 8835!
 # Default host and port - Local on default port 8888
 DEFAULT_HOST="127.0.0.1"
 DEFAULT_PORT=8888
@@ -33,17 +34,15 @@ async def io_init(loop=None, host=DEFAULT_HOST, port=DEFAULT_PORT):
     # Connect to the pigpio daemon
     the_pi=apigpio.Pi(loop)
     await the_pi.connect((host, port))
-    # Setup GPIO modes & PWM params
+    # Setup GPIO digital outputs for direction
     asyncio.gather(
-        the_pi.set_mode(MOTOR1_PWM_PIN, apigpio.OUTPUT),
         the_pi.set_mode(MOTOR1_DIR_PIN, apigpio.OUTPUT),
-        the_pi.set_mode(MOTOR2_PWM_PIN, apigpio.OUTPUT),
         the_pi.set_mode(MOTOR2_DIR_PIN, apigpio.OUTPUT),
     )
     asyncio.gather(
         # Set initial speed to 0 (stopped)
-        the_pi.set_PWM_dutycycle(MOTOR1_PWM_PIN, 0),
-        the_pi.set_PWM_dutycycle(MOTOR1_PWM_PIN, 0)
+        the_pi.hardware_PWM(MOTOR1_PWM_PIN, 0, 0),
+        the_pi.hardware_PWM(MOTOR2_PWM_PIN, 0, 0)
     )
  
 async def cleanup():
@@ -68,7 +67,7 @@ class Motor(object):
             speed = MAX_SPEED
         await io_init()
         asyncio.gather(
-            the_pi.set_PWM_dutycycle(self.pwm_pin, speed),
+            the_pi.hardware_PWM(self.pwm_pin, PWM_FREQUENCY, speed),
             the_pi.write(self.dir_pin, dir_value)
         )
  
@@ -78,7 +77,7 @@ class Motor(object):
         elif speed > 100:
             speed = 100
         # Map to range
-        speed = speed * MAX_SPEED / 100
+        speed = speed * MAX_SPEED // 100
         await self.setSpeed(speed)
  
 class Motors(object):
