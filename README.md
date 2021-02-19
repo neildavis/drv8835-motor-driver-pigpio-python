@@ -46,6 +46,4 @@ sudo killall pigpiod
 
 Specific instructions for using the [pigpio Python client library](http://abyz.me.uk/rpi/pigpio/python.html) based version of this library can be found in the [README](pigpio/README.md) file in the ```pigpio``` directory.
 
-## TODO
-
-The [pigpio Python client library](http://abyz.me.uk/rpi/pigpio/python.html) uses blocking I/O for it's requests. Whilst this overhead is likely minimal for the GPIO output-only nature of this motor driver, it would be conveneient for Python3 developers making use of [apigpio](https://github.com/PierreRust/apigpio) for [asyncio](https://docs.python.org/3/library/asyncio.html) based GPIO monitoring etc, to not have to install a separate library. Support for this is planned.
+If you prefer to use an [asyncio](https://docs.python.org/3/library/asyncio.html) based version of the Python client library, a version of the library using [apigpio](https://github.com/missionpinball/apigpio) is available in the ```apigpio``` directory. See the [README](apigpio/README.md) in that directory for specific instructions in this case. Note this version is limited to use with Python 3.7+
