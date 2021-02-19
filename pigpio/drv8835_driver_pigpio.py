@@ -67,7 +67,7 @@ class Motor(object):
         elif speed > 100:
             speed = 100
         # Map to range
-        speed = speed * MAX_SPEED / 100
+        speed = speed * MAX_SPEED // 100
         self.setSpeed(speed)
  
 class Motors(object):
