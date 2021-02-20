@@ -1,6 +1,6 @@
 from __future__ import print_function
 import time
-from drv8835_driver_pigpio import motors, MAX_SPEED, cleanup
+from drv8835_driver_pigpio import motors, MAX_SPEED, io_init, cleanup
 
 # Set up sequences of motor speeds.
 test_forward_speeds = list(range(0, MAX_SPEED, 2000)) + \
@@ -10,6 +10,7 @@ test_reverse_speeds = list(range(0, -MAX_SPEED, -2000)) + \
   [-MAX_SPEED] * 200 + list(range(-MAX_SPEED, 0, 2000)) + [0]  
 
 try:
+    io_init(host="localhost", port=8888)
     motors.setSpeeds(0, 0)
 
     print("Motor 1 forward")

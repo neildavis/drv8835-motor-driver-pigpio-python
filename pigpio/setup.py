@@ -1,6 +1,6 @@
 from distutils.core import setup
 setup(name='drv8835_driver_pigpio',
-      version='1.0.0',
+      version='1.1.2',
       description=('Library for the Pololu DRV8835 Dual Motor '
                    'Driver Kit for Raspberry Pi using pigpio daemon'),
       url='http://www.pololu.com/product/2753',

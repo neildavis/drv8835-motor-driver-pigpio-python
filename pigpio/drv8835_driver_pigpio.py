@@ -45,21 +45,21 @@ def cleanup():
 class Motor(object):
     MAX_SPEED = _max_speed
 
-    def __init__(self, pwm_pin, dir_pin, pi):
-        io_init()
+    def __init__(self, pwm_pin, dir_pin):
         self.pwm_pin = pwm_pin
         self.dir_pin = dir_pin
-        self.pi = pi
-
+ 
     def setSpeed(self, speed):
+        io_init()
+        global the_pi
         dir_value = 0
         if speed < 0:
             speed = -speed
             dir_value = 1
         if speed > MAX_SPEED:
             speed = MAX_SPEED
-        self.pi.hardware_PWM(self.pwm_pin, PWM_FREQUENCY, speed)
-        self.pi.write(self.dir_pin, dir_value)
+        the_pi.hardware_PWM(self.pwm_pin, PWM_FREQUENCY, speed)
+        the_pi.write(self.dir_pin, dir_value)
 
     def setSpeedPercent(self, speed):
         if speed < -100:
@@ -74,10 +74,8 @@ class Motors(object):
     MAX_SPEED = _max_speed
 
     def __init__(self):
-        io_init()
-        global the_pi
-        self.motor1 = Motor(pwm_pin=MOTOR1_PWM_PIN, dir_pin=MOTOR1_DIR_PIN, pi=the_pi)
-        self.motor2 = Motor(pwm_pin=MOTOR2_PWM_PIN, dir_pin=MOTOR2_DIR_PIN, pi=the_pi)
+        self.motor1 = Motor(pwm_pin=MOTOR1_PWM_PIN, dir_pin=MOTOR1_DIR_PIN)
+        self.motor2 = Motor(pwm_pin=MOTOR2_PWM_PIN, dir_pin=MOTOR2_DIR_PIN)
 
     def setSpeeds(self, m1_speed, m2_speed):
         self.motor1.setSpeed(m1_speed)

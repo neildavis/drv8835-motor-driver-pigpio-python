@@ -1,5 +1,5 @@
 import asyncio
-from drv8835_driver_apigpio import motors, MAX_SPEED, cleanup
+from drv8835_driver_apigpio import motors, MAX_SPEED, io_init, cleanup
 
 async def main():
     # Set up sequences of motor speeds.
@@ -7,6 +7,7 @@ async def main():
     test_reverse_speeds = list(range(0, -MAX_SPEED, -2000)) + [-MAX_SPEED] * 200 + list(range(-MAX_SPEED, 0, 2000)) + [0]  
 
     try:
+        await io_init(loop=asyncio.get_event_loop(), host="localhost", port=8888)
         await motors.setSpeeds(0, 0)
 
         print("Motor 1 forward")
